@@ -1,0 +1,59 @@
+create table cliente (
+	id uuid primary key,
+	email varchar(255),
+	nome varchar(255),
+	sobrenome varchar(255),
+	dt_nascimento date,
+	fl_sexo char(1)
+);
+
+create table usuario (
+	id uuid primary key,
+	login varchar(255),
+	senha varchar(255),
+	cliente_id uuid
+);
+
+create table categoria_produto (
+	id uuid primary key,
+	nome varchar(255),
+	ds_categoria varchar(4000)
+);
+
+create table produto (
+	id uuid primary key,
+	nome varchar(255),
+	ds_produto varchar(4000),
+	categoria_produto_id uuid,
+	cliente_id uuid,
+	valor decimal(10,2),
+	fl_estado char(1)
+);
+
+create table imagem_produto (
+	id uuid primary key,
+	imagem json,
+	produto_id uuid
+);
+
+create table produtos_salvos (
+	cliente_id uuid,
+	produto_id uuid,
+	primary key (cliente_id, produto_id)
+);
+
+alter table usuario add constraint fk_cliente_id foreign key (cliente_id) references cliente (id);
+alter table produto add constraint fk_cliente_id foreign key (cliente_id) references cliente (id);
+alter table produto add constraint fk_categoria_produto_id foreign key (categoria_produto_id) references categoria_produto (id);
+alter table produtos_salvos add constraint fk_cliente_id foreign key (cliente_id) references cliente (id);
+alter table produtos_salvos add constraint fk_produto_id foreign key (produto_id) references produto (id);
+alter table imagem_produto add constraint fk_produto_id foreign key (produto_id) references produto (id);
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+insert into categoria_produto (id, nome, ds_categoria) values 
+((SELECT uuid_generate_v1()), 'Cozinha', 'Utensílios de cozinha'),
+((SELECT uuid_generate_v1()), 'Livros', 'Livros de todas as categorias'),
+((SELECT uuid_generate_v1()), 'Eletrônicos', 'Produtos eletrônicos variados'),
+((SELECT uuid_generate_v1()), 'Alimentos', 'Alimentos no geral'),
+((SELECT uuid_generate_v1()), 'Veículos', 'Veículos no geral');
