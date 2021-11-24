@@ -1,13 +1,11 @@
 package com.freemarket.app.cliente;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.freemarket.app.common.EntityManager;
-
 @Repository
-public class ClienteRepository {
-
-
+public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
 
 }

@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -23,27 +25,28 @@ import lombok.Setter;
 public class Produto {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "id")
+    @Column(name = "nome")
     private String nome;
 
-    @Column(name = "id")
+    @Column(name = "ds_produto")
     private String descricao;
 
     @OneToOne
-    @JoinColumn(name = "categoria_id", referencedColumnName = "id")
+    @JoinColumn(name = "categoria_produto_id", referencedColumnName = "id")
     private Categoria categoria;
 
     @OneToOne
     @JoinColumn(name = "cliente_id", referencedColumnName = "id")
     private Cliente cliente;
 
-    @Column(name = "id")
+    @Column(name = "valor")
     private float valor;
 
-    @Column(name = "id")
+    @Column(name = "fl_estado")
     private String estado;
 
 }
