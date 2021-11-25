@@ -11,4 +11,7 @@ import com.freemarket.app.cliente.Cliente;
 public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     void removeByCliente(Cliente cliente);
+
+    Usuario getByLoginAndSenha(String login, String senha);
+
 }

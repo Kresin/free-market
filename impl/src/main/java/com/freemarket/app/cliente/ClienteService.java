@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.freemarket.app.produto.ProdutoRepository;
 import com.freemarket.app.usuario.Usuario;
 import com.freemarket.app.usuario.UsuarioMapper;
 import com.freemarket.app.usuario.UsuarioRepository;
@@ -19,6 +20,9 @@ public class ClienteService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
 
     @Autowired
     private ClienteMapper clienteMapper;
@@ -36,7 +40,7 @@ public class ClienteService {
         return clienteMapper.dtoFromClienteAndUsuario(clienteSalvo, usuarioSalvo);
     }
 
-    public ClienteDTO getById(UUID uuid) {
+    public ClienteDTO obterClientePorId(UUID uuid) {
         return clienteMapper.dtoFromCliente(clienteRepository.getById(uuid));
     }
 
@@ -52,6 +56,7 @@ public class ClienteService {
     public void excluirCliente(String id) {
         Cliente cliente = clienteRepository.getById(UUID.fromString(id));
         usuarioRepository.removeByCliente(cliente);
+        produtoRepository.removeByCliente(cliente);
         clienteRepository.deleteById(cliente.getId());
     }
 

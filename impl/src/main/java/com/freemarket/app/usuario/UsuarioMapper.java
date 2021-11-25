@@ -28,4 +28,32 @@ public class UsuarioMapper {
         usuario.setCliente(cliente);
     }
 
+    public UsuarioDTO dtoFromUsuario(Usuario usuario) {
+        if (usuario == null) {
+            return null;
+        }
+
+        UsuarioDTO dto = new UsuarioDTO();
+        mergeDTOFromUsuario(dto, usuario);
+        return dto;
+    }
+
+    private void mergeDTOFromUsuario(UsuarioDTO dto, Usuario usuario) {
+        if (dto == null || usuario == null) {
+            return;
+        }
+
+        dto.login = usuario.getLogin();
+        dto.senha = usuario.getSenha();
+    }
+
+    public void mergeUsuarioFromDTO(Usuario usuario, UsuarioDTO dto) {
+        if (usuario == null || dto == null) {
+            return;
+        }
+
+        usuario.setLogin(dto.login);
+        usuario.setSenha(dto.senha);
+    }
+
 }

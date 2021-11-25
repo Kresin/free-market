@@ -25,7 +25,7 @@ public class ClienteAPI {
 
     @GetMapping(path = "/get/{id}")
     public ClienteDTO obter(@PathVariable("id") String id) {
-        return clienteService.getById(UUID.fromString(id));
+        return clienteService.obterClientePorId(UUID.fromString(id));
     }
 
     @PostMapping(path = "/update/{id}")
