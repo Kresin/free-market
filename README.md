@@ -17,6 +17,7 @@ A aplicação contém uma tela de login e um cadastro para usuários novos. Os u
 1. Você pode fazer o download da IDE [aqui](https://www.jetbrains.com/pt-br/idea/download/#section=windows)
 2. Após baixar e installar a IDE, inicie ela
 3. Acesse a aba File > Open > Selecione a pasta do projeto
+   
    ![image](images/import_project_1.png)
 4. Acesse novamente a aba File > Project Structure e faça as seguintes configurações:
    1. Configure a SDK do projeto na aba Project
@@ -24,6 +25,7 @@ A aplicação contém uma tela de login e um cadastro para usuários novos. Os u
    2. Na aba Modules, importe o módulo impl do projeto clicando ícone +
       ![image](images/import_project_3.png)
    3. Selecione a pasta impl do projeto
+      
       ![image](images/import_project_4.png)
    4. Importe como projeto maven e clique em finish
       ![image](images/import_project_5.png)
