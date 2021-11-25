@@ -11,8 +11,6 @@ import com.freemarket.app.cliente.Cliente;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, UUID> {
 
-    List<Produto> getAll();
-
     List<Produto> getByCliente(Cliente cliente);
 
     void removeByCliente(Cliente cliente);

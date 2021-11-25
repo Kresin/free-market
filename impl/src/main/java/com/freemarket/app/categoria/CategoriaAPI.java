@@ -14,7 +14,7 @@ public class CategoriaAPI {
     @Autowired
     private CategoriaService categoriaService;
 
-    @GetMapping(name = "/getAll")
+    @GetMapping(path = "/getAll")
     public List<CategoriaDTO> obterCategorias() {
         return categoriaService.obterCategorias();
     }

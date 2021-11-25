@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,14 +37,14 @@ public class Produto {
     private String descricao;
 
     @OneToOne
-    @JoinColumn(name = "categoria_produto_id", referencedColumnName = "id")
+    @JoinColumn(name = "categoria_produto_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Categoria categoria;
 
     @Column(name = "categoria_produto_id")
     private UUID categoriaId;
 
     @OneToOne
-    @JoinColumn(name = "cliente_id", referencedColumnName = "id")
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Cliente cliente;
 
     @Column(name = "cliente_id")

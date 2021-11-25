@@ -16,7 +16,7 @@ public class CategoriaService {
     private CategoriaMapper categoriaMapper;
 
     public List<CategoriaDTO> obterCategorias() {
-        List<Categoria> categorias = categoriaRepository.getAll();
+        List<Categoria> categorias = categoriaRepository.findAll();
         return categorias.stream().map(categoria -> categoriaMapper.dtoFromCategoria(categoria)).collect(Collectors.toList());
     }
 

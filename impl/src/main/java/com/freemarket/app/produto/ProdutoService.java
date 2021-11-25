@@ -1,6 +1,7 @@
 package com.freemarket.app.produto;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.freemarket.app.categoria.Categoria;
+import com.freemarket.app.categoria.CategoriaRepository;
 import com.freemarket.app.cliente.Cliente;
 import com.freemarket.app.cliente.ClienteRepository;
 
@@ -17,6 +20,9 @@ public class ProdutoService {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     @Autowired
     private ProdutoMapper produtoMapper;
@@ -36,7 +42,7 @@ public class ProdutoService {
     }
 
     public List<ProdutoDTO> obterTodosOsProdutos() {
-        List<Produto> produtos = produtoRepository.getAll();
+        List<Produto> produtos = produtoRepository.findAll();
         return produtos.stream().map(produto -> produtoMapper.dtoFromProduto(produto)).collect(Collectors.toList());
     }
 
