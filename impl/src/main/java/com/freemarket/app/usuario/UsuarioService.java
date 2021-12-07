@@ -1,6 +1,7 @@
 package com.freemarket.app.usuario;
 
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -14,8 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.freemarket.app.cliente.Cliente;
+import com.freemarket.app.cliente.ClienteDTO;
 import com.freemarket.app.cliente.ClienteMapper;
 import com.freemarket.app.cliente.ClienteRepository;
+import com.freemarket.app.exceptions.LoginException;
+import com.freemarket.app.token.JwtTokenUtil;
 import com.freemarket.app.validators.Validator;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -24,8 +28,6 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class UsuarioService {
-
-    private final SecretKey CHAVE = Keys.hmacShaKeyFor("7f-j&CKk=coNzZc0y7_4obMP?#TfcYq%fcD0mDpenW2nc!lfGoZ|d?f&RNbDHUX6".getBytes(StandardCharsets.UTF_8));
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -40,37 +42,29 @@ public class UsuarioService {
     private ClienteMapper clienteMapper;
 
     @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
     private Validator validator;
 
-    public Response login(UsuarioDTO dto) {
+    public ClienteDTO login(UsuarioDTO dto) {
         Usuario usuario = usuarioRepository.getByLoginAndSenha(dto.login, dto.senha);
         if (usuario != null) {
-            String jwtToken = Jwts.builder()
-                    .setSubject(usuario.getLogin())
-                    .setIssuer("localhost:8080")
-                    .setIssuedAt(new Date())
-                    .setExpiration(Date.from(
-                            LocalDateTime.now()
-                                    .plusMinutes(15L)
-                                    .atZone(ZoneId.systemDefault())
-                            .toInstant()))
-                    .signWith(CHAVE, SignatureAlgorithm.ES512)
-                    .compact();
-
-            return Response.status(Response.Status.OK).entity(jwtToken).build();
+            ClienteDTO clienteDTO = clienteMapper.dtoFromCliente(usuario.getCliente());
+            clienteDTO.token = jwtTokenUtil.generateToken(usuario.getCliente());
+            return clienteDTO;
         } else {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Usuário e/ou senha inválidos.").build();
+            throw new LoginException("Usuário e/ou senha inválidos");
         }
     }
 
     public Response verificaToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(CHAVE).parseClaimsJws(token);
+        Boolean isExpired = jwtTokenUtil.isTokenExpired(token);
+        if (isExpired) {
+            throw new LoginException("Token expirado");
+        } else {
             return Response.status(Response.Status.OK).entity(true).build();
-        } catch (ExpiredJwtException ex) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Token expirado.").build();
         }
-
     }
 
     public UsuarioDTO atualizaUsuario(String id, UsuarioDTO dto) {

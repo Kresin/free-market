@@ -17,4 +17,6 @@ public class ClienteDTO {
 
     public String sexo;
 
+    public String token;
+
 }

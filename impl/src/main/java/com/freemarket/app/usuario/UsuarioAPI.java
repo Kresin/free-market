@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.freemarket.app.cliente.ClienteDTO;
+
 @RestController
 @RequestMapping("/api/usuario")
 public class UsuarioAPI {
@@ -19,9 +21,9 @@ public class UsuarioAPI {
     @Autowired
     private UsuarioService usuarioService;
 
-    @CrossOrigin
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path = "/login")
-    public Response login(@RequestBody UsuarioDTO dto) {
+    public ClienteDTO login(@RequestBody UsuarioDTO dto) {
         return usuarioService.login(dto);
     }
 
