@@ -12,6 +12,8 @@ public class ProdutoDTO {
 
     public UUID categoriaId;
 
+    public String nomeCategoria;
+
     public UUID clienteId;
 
     public float valor;

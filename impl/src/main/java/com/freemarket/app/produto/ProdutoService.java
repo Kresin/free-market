@@ -58,18 +58,28 @@ public class ProdutoService {
     }
 
     public ProdutoDTO obterProdutoPorId(UUID id) {
-        return produtoMapper.dtoFromProduto(produtoRepository.getById(id));
+        ProdutoDTO produtoDTO = produtoMapper.dtoFromProduto(produtoRepository.getById(id));
+        produtoDTO.nomeCategoria = categoriaRepository.getById(produtoDTO.categoriaId).getNome();
+        return produtoDTO;
     }
 
     public List<ProdutoDTO> obterTodosOsProdutos() {
         List<Produto> produtos = produtoRepository.findAll();
-        return produtos.stream().map(produto -> produtoMapper.dtoFromProduto(produto)).collect(Collectors.toList());
+        List<ProdutoDTO> dtos = produtos.stream().map(produto -> produtoMapper.dtoFromProduto(produto)).collect(Collectors.toList());
+        dtos.forEach(this::setNomeCategoria);
+        return dtos;
+    }
+
+    private void setNomeCategoria(ProdutoDTO dto) {
+        dto.nomeCategoria = categoriaRepository.getById(dto.categoriaId).getNome();
     }
 
     public List<ProdutoDTO> obterMeusProdutos(String id) {
         Cliente cliente = clienteRepository.getById(UUID.fromString(id));
         List<Produto> produtos = produtoRepository.getByCliente(cliente);
-        return produtos.stream().map(produto -> produtoMapper.dtoFromProduto(produto)).collect(Collectors.toList());
+        List<ProdutoDTO> dtos = produtos.stream().map(produto -> produtoMapper.dtoFromProduto(produto)).collect(Collectors.toList());
+        dtos.forEach(this::setNomeCategoria);
+        return dtos;
     }
 
     public ProdutoDTO atualizaProduto(String id, ProdutoDTO dto) {
