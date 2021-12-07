@@ -3,6 +3,7 @@ package com.freemarket.app.cliente;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,21 +19,25 @@ public class ClienteAPI {
     @Autowired
     private ClienteService clienteService;
 
+    @CrossOrigin
     @PostMapping(path = "/new")
     public CadastroDTO cadastrar(@RequestBody CadastroDTO dto) {
         return clienteService.cadastraCliente(dto);
     }
 
+    @CrossOrigin
     @GetMapping(path = "/get/{id}")
     public ClienteDTO obter(@PathVariable("id") String id) {
         return clienteService.obterClientePorId(UUID.fromString(id));
     }
 
+    @CrossOrigin
     @PostMapping(path = "/update/{id}")
     public ClienteDTO alterar(@PathVariable("id") String id, @RequestBody ClienteDTO dto) {
         return clienteService.atualizaCliente(id, dto);
     }
 
+    @CrossOrigin
     @DeleteMapping(path = "/delete/{id}")
     public void excluir(@PathVariable("id") String id) {
         clienteService.excluirCliente(id);
