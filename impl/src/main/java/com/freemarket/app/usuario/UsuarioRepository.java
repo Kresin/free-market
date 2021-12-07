@@ -14,4 +14,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     Usuario getByLoginAndSenha(String login, String senha);
 
+    long countByLogin(String login);
+
 }

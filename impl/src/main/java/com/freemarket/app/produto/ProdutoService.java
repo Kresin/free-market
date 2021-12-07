@@ -14,6 +14,8 @@ import com.freemarket.app.categoria.Categoria;
 import com.freemarket.app.categoria.CategoriaRepository;
 import com.freemarket.app.cliente.Cliente;
 import com.freemarket.app.cliente.ClienteRepository;
+import com.freemarket.app.exceptions.CadastroException;
+import com.freemarket.app.validators.Validator;
 
 @Service
 public class ProdutoService {
@@ -30,11 +32,29 @@ public class ProdutoService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private Validator validator;
+
     public ProdutoDTO anunciaProduto(ProdutoDTO dto) {
+        validate(dto, false);
         Produto produto = produtoMapper.produtoFromDTO(dto);
         Produto produtoSalvo = produtoRepository.save(produto);
 
         return produtoMapper.dtoFromProduto(produtoSalvo);
+    }
+
+    private void validate(ProdutoDTO dto, boolean isUpdate) {
+        validator.validateProduto(dto, isUpdate);
+
+        Optional<Cliente> cliente = clienteRepository.findById(dto.clienteId);
+        if (!cliente.isPresent()) {
+            throw new CadastroException("id de cliente não encontrado");
+        }
+
+        Optional<Categoria> categoria = categoriaRepository.findById(dto.categoriaId);
+        if (!categoria.isPresent()) {
+            throw new CadastroException("id da categoria não encontrado");
+        }
     }
 
     public ProdutoDTO obterProdutoPorId(UUID id) {
@@ -53,6 +73,7 @@ public class ProdutoService {
     }
 
     public ProdutoDTO atualizaProduto(String id, ProdutoDTO dto) {
+        validate(dto, true);
         Produto produto = produtoRepository.getById(UUID.fromString(id));
         produtoMapper.mergeProdutoFromDTO(produto, dto);
         produto = produtoRepository.save(produto);
