@@ -116,10 +116,6 @@ public class Validator {
             throw new CadastroException("estado inválido");
         }
 
-        if (dto.categoriaId == null) {
-            throw new CadastroException("categoria inválida");
-        }
-
         if (dto.clienteId == null) {
             throw new CadastroException("cliente inválido");
         }
