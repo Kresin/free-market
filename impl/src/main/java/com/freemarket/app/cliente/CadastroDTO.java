@@ -21,4 +21,6 @@ public class CadastroDTO {
 
     public String senha;
 
+    public String token;
+
 }

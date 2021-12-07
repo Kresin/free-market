@@ -15,7 +15,7 @@ public class CategoriaAPI {
     @Autowired
     private CategoriaService categoriaService;
 
-    @CrossOrigin
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(path = "/getAll")
     public List<CategoriaDTO> obterCategorias() {
         return categoriaService.obterCategorias();

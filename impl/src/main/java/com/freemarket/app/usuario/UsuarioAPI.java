@@ -27,19 +27,19 @@ public class UsuarioAPI {
         return usuarioService.login(dto);
     }
 
-    @CrossOrigin
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path = "/verifyToken")
     public Response verifyToken(@QueryParam("token") String token) {
         return usuarioService.verificaToken(token);
     }
 
-    @CrossOrigin
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path = "/update/{id}")
     public UsuarioDTO alterar(@PathVariable("id") String id, @RequestBody UsuarioDTO dto) {
         return usuarioService.atualizaUsuario(id, dto);
     }
 
-    @CrossOrigin
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping(path = "/delete/{id}")
     public void excluir(@PathVariable("id") String id) {
         usuarioService.excluirUsuario(id);

@@ -19,25 +19,25 @@ public class ClienteAPI {
     @Autowired
     private ClienteService clienteService;
 
-    @CrossOrigin
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path = "/new")
     public CadastroDTO cadastrar(@RequestBody CadastroDTO dto) {
         return clienteService.cadastraCliente(dto);
     }
 
-    @CrossOrigin
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(path = "/get/{id}")
     public ClienteDTO obter(@PathVariable("id") String id) {
         return clienteService.obterClientePorId(UUID.fromString(id));
     }
 
-    @CrossOrigin
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(path = "/update/{id}")
     public ClienteDTO alterar(@PathVariable("id") String id, @RequestBody ClienteDTO dto) {
         return clienteService.atualizaCliente(id, dto);
     }
 
-    @CrossOrigin
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping(path = "/delete/{id}")
     public void excluir(@PathVariable("id") String id) {
         clienteService.excluirCliente(id);

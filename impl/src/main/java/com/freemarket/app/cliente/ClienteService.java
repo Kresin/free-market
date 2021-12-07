@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.freemarket.app.exceptions.CadastroException;
 import com.freemarket.app.produto.ProdutoRepository;
+import com.freemarket.app.token.JwtTokenUtil;
 import com.freemarket.app.usuario.Usuario;
 import com.freemarket.app.usuario.UsuarioMapper;
 import com.freemarket.app.usuario.UsuarioRepository;
@@ -35,6 +36,9 @@ public class ClienteService {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     public CadastroDTO cadastraCliente(CadastroDTO cadastroDTO) {
         validate(cadastroDTO);
         Cliente cliente = clienteMapper.clienteFromCadastroDTO(cadastroDTO);
@@ -43,7 +47,10 @@ public class ClienteService {
         Usuario usuario = usuarioMapper.usuarioFromClienteAndCadastroDTO(cadastroDTO, clienteSalvo);
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
-        return clienteMapper.dtoFromClienteAndUsuario(clienteSalvo, usuarioSalvo);
+        CadastroDTO dto = clienteMapper.dtoFromClienteAndUsuario(clienteSalvo, usuarioSalvo);
+        dto.token = jwtTokenUtil.generateToken(clienteSalvo);
+
+        return dto;
     }
 
     private void validate(CadastroDTO cadastroDTO) {
