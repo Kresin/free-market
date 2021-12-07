@@ -37,6 +37,7 @@ public class ProdutoService {
 
     public ProdutoDTO anunciaProduto(ProdutoDTO dto) {
         validate(dto, false);
+
         Produto produto = produtoMapper.produtoFromDTO(dto);
         Produto produtoSalvo = produtoRepository.save(produto);
 
@@ -51,10 +52,11 @@ public class ProdutoService {
             throw new CadastroException("id de cliente não encontrado");
         }
 
-        Optional<Categoria> categoria = categoriaRepository.findById(dto.categoriaId);
-        if (!categoria.isPresent()) {
-            throw new CadastroException("id da categoria não encontrado");
+        Categoria categoria = categoriaRepository.getByNome(dto.nomeCategoria);
+        if (categoria == null) {
+            throw new CadastroException("Categoria não encontrada");
         }
+        dto.categoriaId = categoria.getId();
     }
 
     public ProdutoDTO obterProdutoPorId(UUID id) {
